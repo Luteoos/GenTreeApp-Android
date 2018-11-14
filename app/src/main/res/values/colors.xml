@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#dd19ff</color>
+    <color name="colorAccent">#dd2137</color>
+
+        <color name="white">#ffffff</color>
+
+        <color name="colorUnread">#e4ded9</color>
+        <color name="colorLandingBackground">#fdfdfe</color>
+        <color name="colorStreatLine">#000000</color>
+        <color name="colorPhotosetsIcon">#5ac5d5</color>
+        <color name="colorFlagtypeIcon">#F06B89</color>
+        <color name="colorTodoIcon">#A4A8AB</color>
+        <color name="colorAnalyticsIcon">#92c13f</color>
+        <color name="colorStatusbaronline">#5BD367</color>
+        <color name="colorIconBefore">#A29F9F</color>
+        <color name="colorBackgroundPhotosets">#F5F6F7</color>
+        <color name="colorTextnoexist">#D6D6D6</color>
+        <color name="colorBackgroundSetting">#E0E2E2</color>
+        <color name="colorGreySearch">#a2a2a2</color>
+        <color name="colorGreySearchView">#E6E7E7</color>
+        <color name="colorAfter">#F5F6F8</color>
+        <color name="colorBackgroundFragment">#f0f0f0</color>
+        <color name="colorDialogButton">#297CF6</color>
+        <color name="colorSettingsSectionBackground">#EFEFF4</color>
+        <color name="colorSettingsSectionFont">#6D6D68</color>
+        <color name="colorLine">#E3E3E5</color>
+        <color name="colorSettingsImageBackground">#949494</color>
+        <color name="colorBackgroundPlaceHolder">#C6C6C6</color>
+        <color name="colorHintTextSettings">#A9A9A9</color>
+        <color name="colorBlueButton">#297CF6</color>
+        <color name="colorGreyBackgroundFlagFragment">#fbfbfb</color>
+        <color name="colorGreyChat">#cacaca</color>
+        <color name="menu_disabled">#949494</color>
+        <color name="colorSwitchOn">#62cba7</color>
+        <color name="colorSwitchTeams">#81c784</color>
+        <color name="colorNotificationsIcon">#dce775</color>
+        <color name="colorLogout">#d32f2f</color>
+        <color name="colorButtonSwipeDisabled">#e0e0e0</color>
+        <color name="colorTodoCompleted">#76ff03</color>
+        <color name="colorSectionBackground">#bdbdbd</color>
+</resources>
