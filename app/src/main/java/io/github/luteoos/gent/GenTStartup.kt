@@ -2,6 +2,7 @@ package io.github.luteoos.gent
 
 import android.app.Application
 import android.os.StrictMode
+import io.github.luteoos.gent.session.SessionManager
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import timber.log.Timber
@@ -19,6 +20,7 @@ class GenTStartup : Application() {
             .deleteRealmIfMigrationNeeded()
             .build()
         Realm.setDefaultConfiguration(realmConfiguration)
+        SessionManager.init(applicationContext)
     }
 
     private fun initDebugStuff() {
