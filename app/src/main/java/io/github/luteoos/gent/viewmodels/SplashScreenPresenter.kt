@@ -5,7 +5,7 @@ import android.arch.lifecycle.MutableLiveData
 import com.luteoos.kotlin.mvvmbaselib.BaseViewModel
 import io.realm.Realm
 
-class SplashScreenPresenter(realmU : Realm) : BaseViewModel(realm = realmU) {
+class SplashScreenPresenter : BaseViewModel() {
 //    private val increment: MutableLiveData<Int> = MutableLiveData()
 //
 //    init {

@@ -22,7 +22,7 @@ class SplashScreen : BaseActivityMVVM<SplashScreenPresenter>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = SplashScreenPresenter(realmU = Realm.getDefaultInstance())
+        viewModel = SplashScreenPresenter()
 
 //        viewModel.getIncrementValue().observe(this, Observer { value -> textView.text=value.toString() })
 //        button.onClick { viewModel.increment() }
