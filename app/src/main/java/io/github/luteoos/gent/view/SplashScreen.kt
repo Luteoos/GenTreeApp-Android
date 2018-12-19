@@ -17,6 +17,9 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 
 
 class SplashScreen : BaseActivityMVVM<SplashScreenPresenter>() {
+    override fun onVMMessage(msg: String?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     override fun getLayoutID(): Int = R.layout.activity_splashscreen
 

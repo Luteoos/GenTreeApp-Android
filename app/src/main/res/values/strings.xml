@@ -4,4 +4,6 @@
     <string name="login_button">Log In</string>
     <string name="UsernameTip">Username</string>
     <string name="PasswordTip">Password</string>
+    <string name="api_error">No connection!</string>
+    <string name="error">Error!</string>
 </resources>

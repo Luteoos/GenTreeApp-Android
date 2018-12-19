@@ -53,4 +53,25 @@
             android:id="@+id/labelPassword" app:layout_constraintStart_toStartOf="@+id/etPassword"
             android:layout_marginBottom="4dp"
             app:layout_constraintBottom_toTopOf="@+id/etPassword" android:textColor="@color/colorAccent"/>
+
+    <cdflynn.android.library.checkview.CheckView
+        android:id="@+id/check"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:checkView_strokeColor="@color/green"
+        app:layout_constraintBottom_toBottomOf="@+id/progressBar"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar"
+        app:layout_constraintStart_toStartOf="@+id/progressBar"
+        app:layout_constraintTop_toTopOf="@+id/progressBar"
+        tools:elevation="@dimen/materialize_spacing" />
+
+    <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:visibility="invisible"/>
 </android.support.constraint.ConstraintLayout>

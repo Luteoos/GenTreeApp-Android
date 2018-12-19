@@ -14,7 +14,7 @@
         <item name="android:textColorHint">@color/colorHintTextSettings</item>
         <item name="android:editTextColor">@color/colorBlueButton</item>
         <item name="colorControlNormal">@color/colorAccent</item>
-        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
         <item name="colorControlHighlight">@color/colorAccent</item>
     </style>
 
