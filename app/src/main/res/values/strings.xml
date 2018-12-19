@@ -2,4 +2,6 @@
     <string name="app_name">GenT</string>
     <string name="exit_button">Exit</string>
     <string name="login_button">Log In</string>
+    <string name="UsernameTip">Username</string>
+    <string name="PasswordTip">Password</string>
 </resources>

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-                                             android:layout_height="match_parent">
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent" android:id="@+id/cl_background">
 
     <Button
             android:text="@string/login_button"
@@ -18,4 +20,37 @@
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp" tools:text="@string/exit_button" android:textSize="18sp"
             android:background="@drawable/rounded_button" android:text="@string/exit_button"/>
+    <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/etUsername"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginBottom="16dp" app:layout_constraintBottom_toTopOf="@+id/labelPassword"/>
+    <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/etPassword" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" android:layout_marginBottom="64dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnExit"/>
+    <TextView
+            android:text="@string/UsernameTip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/labelUsername" android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toTopOf="@+id/etUsername" app:layout_constraintStart_toStartOf="@+id/etUsername"
+            android:textColor="@color/colorAccent"/>
+    <TextView
+            android:text="@string/PasswordTip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/labelPassword" app:layout_constraintStart_toStartOf="@+id/etPassword"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toTopOf="@+id/etPassword" android:textColor="@color/colorAccent"/>
 </android.support.constraint.ConstraintLayout>
