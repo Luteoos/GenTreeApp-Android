@@ -1,7 +1,9 @@
 package io.github.luteoos.gent.view.activity
 
 import android.app.Application
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.EventLog
 import android.view.View
 import com.eightbitlab.rxbus.Bus
@@ -10,10 +12,14 @@ import com.luteoos.kotlin.mvvmbaselib.BaseViewModel
 import es.dmoral.toasty.Toasty
 import io.github.luteoos.gent.R
 import io.github.luteoos.gent.session.SessionManager
+import io.github.luteoos.gent.utils.Parameters
 import io.github.luteoos.gent.viewmodels.LogInViewModel
 import kotlinx.android.synthetic.main.activity_log_in.*
 import org.jetbrains.anko.ctx
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import android.support.v4.os.HandlerCompat.postDelayed
+
+
 
 class LogInActivity : BaseActivityMVVM<LogInViewModel>() {
 
@@ -24,11 +30,13 @@ class LogInActivity : BaseActivityMVVM<LogInViewModel>() {
         viewModel = LogInViewModel()
         this.connectToVMMessage()
         setBinding()
-
     }
 
     override fun onVMMessage(msg: String?){
-        Toasty.info(this@LogInActivity, msg!!).show()
+        when(msg){
+            Parameters.LOG_IN_SUCCESS -> onLogInSuccess()
+            Parameters.LOG_IN_FAILED -> onLogInFailed()
+        }
     }
 
     fun hideProgressBar(){
@@ -42,7 +50,13 @@ class LogInActivity : BaseActivityMVVM<LogInViewModel>() {
     private fun onLogInSuccess(){
         hideProgressBar()
         check.check()
-        startMainActivity()
+        btnLogIn.isClickable = false
+        Handler().postDelayed(({ startMainActivity() }), 700)
+    }
+
+    private fun onLogInFailed(){
+        hideProgressBar()
+        Toasty.error(this, getString(R.string.login_failed)).show()
     }
 
     private fun setBinding(){
@@ -51,20 +65,30 @@ class LogInActivity : BaseActivityMVVM<LogInViewModel>() {
         }
         cl_background.onClick {
             hideKeyboard()
-            progressBar.visibility = View.INVISIBLE
-            check.check()
-            viewModel.test("TEST")
         }
         btnLogIn.onClick {
-            if(isNetworkOnLine)
+            if(!isNetworkOnLine)
                 Toasty.error(this@LogInActivity, R.string.api_error).show()
             else{
                 showProgressBar()
+                logInValdiateText()
             }
         }
     }
 
-    private fun startMainActivity(){
+    private fun logInValdiateText(){
+        if(etUsername.text.isNullOrEmpty() || etPassword.text.isNullOrEmpty()){
+            hideProgressBar()
+            Toasty.error(this, getString(R.string.login_failed)).show()
+        }
+        else{
+            viewModel.LogInRest(etUsername.text.toString(), etPassword.text.toString())
+        }
+    }
 
+    private fun startMainActivity(){
+        val intent = Intent(this, MainScreenActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 }

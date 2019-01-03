@@ -22,5 +22,11 @@
                 android:name=".view.activity.LogInActivity"
                 android:theme="@style/LandingTheme"
                 android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+                android:name=".view.activity.MainScreenActivity"
+                android:theme="@style/LandingTheme"
+                android:windowSoftInputMode="stateHidden|adjustPan" />
     </application>
+
+
 </manifest>

@@ -6,4 +6,5 @@
     <string name="PasswordTip">Password</string>
     <string name="api_error">No connection!</string>
     <string name="error">Error!</string>
+    <string name="login_failed">Wrong username or password!</string>
 </resources>

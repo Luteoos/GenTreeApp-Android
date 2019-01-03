@@ -18,7 +18,6 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class SplashScreen : BaseActivityMVVM<SplashScreenPresenter>() {
     override fun onVMMessage(msg: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun getLayoutID(): Int = R.layout.activity_splashscreen
@@ -26,10 +25,7 @@ class SplashScreen : BaseActivityMVVM<SplashScreenPresenter>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = SplashScreenPresenter()
-
-//        viewModel.getIncrementValue().observe(this, Observer { value -> textView.text=value.toString() })
-//        button.onClick { viewModel.increment() }
-        textView.onClick { startLogInActivity() }
+        button.onClick { startLogInActivity() }
     }
 
     private fun startLogInActivity(){
