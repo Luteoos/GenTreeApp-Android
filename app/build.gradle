@@ -25,6 +25,20 @@ android {
             resValue "string", "app_version", "$app_version-debug"
         }
     }
+        flavorDimensions "server"
+        productFlavors {
+            production {
+                dimension "server"
+                buildConfigField("String", "BASE_URL", "\"\"")
+                resValue "string", "app_name", "GenTree"
+            }
+            staging {
+                dimension "server"
+                applicationIdSuffix ".dev"
+                buildConfigField("String", "BASE_URL", "\"\"")
+                resValue "string", "app_name", "GenTree - staging"
+            }
+        }
 }
 
 dependencies {
