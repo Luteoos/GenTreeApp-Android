@@ -35,7 +35,7 @@ android {
             staging {
                 dimension "server"
                 applicationIdSuffix ".dev"
-                buildConfigField("String", "BASE_URL", "\"\"")
+                buildConfigField("String", "BASE_URL", "\"https://gentreeappapi.azurewebsites.net/\"")
                 resValue "string", "app_name", "GenTree - staging"
             }
         }
@@ -79,5 +79,12 @@ dependencies {
     //glide
     implementation 'com.github.bumptech.glide:glide:4.7.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
+
+    //network
+    implementation "com.squareup.retrofit2:retrofit:2.3.0"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:2.2.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:3.7.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.3.0"
+    implementation "com.google.code.gson:gson:2.8.2"
 }
 
