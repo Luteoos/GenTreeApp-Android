@@ -6,4 +6,9 @@
     <string name="api_error">No connection!</string>
     <string name="error">Error!</string>
     <string name="login_failed">Wrong username or password!</string>
+    <string name="profile_icon">My Profile</string>
+    <string name="trees_icon">Tree List</string>
+    <string name="change_avatar">Change avatar</string>
+    <string name="logout">Logout</string>
+    <string name="failed_load_avatar">Failed to load avatar!</string>
 </resources>

@@ -16,7 +16,7 @@ object SessionManager {
     }
 
 
-    val userUUDString: String
+    val userUUDString: String?
         get() = preferences.getString(USER_UUID, "")
     var userUUID: UUID
         get() {
@@ -27,33 +27,18 @@ object SessionManager {
             preferences.edit().putString(USER_UUID, value.toString()).apply()
         }
 
-    var username: String
+    var username: String?
         get() = preferences.getString(USER_NAME, "")
         set(value) {
             preferences.edit().putString(USER_NAME, value).apply()
         }
 
-    var accessToken: String
+    var accessToken: String?
         get() = preferences.getString(ACCESS_TOKEN, "")
         set(value) {
             preferences.edit().putString(ACCESS_TOKEN, value).apply()
         }
 
-    var firstName: String
-        get() = preferences.getString(FIRST_NAME, "")
-        set(value) {
-            preferences.edit().putString(FIRST_NAME, value).apply()
-        }
-    var lastName: String
-        get() = preferences.getString(LAST_NAME, "")
-        set(value) {
-            preferences.edit().putString(LAST_NAME, value).apply()
-        }
-    var email: String
-        get() = preferences.getString(EMAIL, "")
-        set(value) {
-            preferences.edit().putString(EMAIL, value).apply()
-        }
     fun logout(context: Context) {
         preferences.edit().clear().apply()
         val intent = Intent(context, SplashScreen::class.java)

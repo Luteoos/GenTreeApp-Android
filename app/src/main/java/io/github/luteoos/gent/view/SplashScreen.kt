@@ -11,6 +11,7 @@ import io.realm.Realm
 import com.luteoos.kotlin.mvvmbaselib.BaseActivityMVVM
 import io.github.luteoos.gent.session.SessionManager
 import io.github.luteoos.gent.view.activity.LogInActivity
+import io.github.luteoos.gent.view.activity.MainScreenActivity
 import kotlinx.android.synthetic.main.activity_splashscreen.*
 import org.jetbrains.anko.ctx
 import org.jetbrains.anko.sdk27.coroutines.onClick
@@ -26,10 +27,21 @@ class SplashScreen : BaseActivityMVVM<SplashScreenPresenter>() {
         super.onCreate(savedInstanceState)
         viewModel = SplashScreenPresenter()
         button.onClick { startLogInActivity() }
+        if(isAlreadyLoggedIn())
+            startMainScreenActivity()
     }
 
     private fun startLogInActivity(){
         val intent = Intent(this, LogInActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+    }
+
+    private fun isAlreadyLoggedIn(): Boolean = SessionManager.accessToken != null && SessionManager.userUUDString != null
+                                                && SessionManager.accessToken != "" && SessionManager.userUUDString != ""
+
+    private fun startMainScreenActivity(){
+        val intent = Intent(this, MainScreenActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
     }

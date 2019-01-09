@@ -20,7 +20,7 @@
         <color name="colorBackgroundSetting">#E0E2E2</color>
         <color name="colorGreySearch">#a2a2a2</color>
         <color name="colorGreySearchView">#E6E7E7</color>
-        <color name="colorAfter">#F5F6F8</color>
+        <color name="colorAfter">#f5f6f8</color>
         <color name="colorBackgroundFragment">#f0f0f0</color>
         <color name="colorDialogButton">#297CF6</color>
         <color name="colorSettingsSectionBackground">#EFEFF4</color>
