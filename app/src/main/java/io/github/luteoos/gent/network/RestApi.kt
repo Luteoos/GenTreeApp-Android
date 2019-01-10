@@ -8,12 +8,14 @@ import com.google.gson.annotations.Expose
 import io.github.luteoos.gent.BuildConfig
 import io.github.luteoos.gent.session.SessionManager
 import okhttp3.Dispatcher
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Multipart
 import java.lang.reflect.Type
 
 object RestApi {
@@ -72,7 +74,22 @@ object RestApi {
         val client = httpClient.build()
         val retrofit = builder.client(client).build()
         return retrofit.create(serviceClass)
+    }
 
+    fun <S> createServiceWithMultipart(serviceClass: Class<S>, accessToken: String): S{
+        httpClient.addInterceptor { chain ->
+            val original = chain.request()
+            val requestBuilder = original.newBuilder()
+                .header("Accept", "application/json")
+                .header("Content-Type","multipart/form-data; boundary====" + System.currentTimeMillis().toString() + "===")
+                .header("Authorization", "Bearer " +  accessToken)
+                .method(original.method(), original.body())
+            val request = requestBuilder.build()
+            chain.proceed(request)
+        }
+        val client = httpClient.build()
+        val retrofit = builder.client(client).build()
+        return retrofit.create(serviceClass)
     }
 
     fun <S> createService(serviceClass: Class<S>, accessToken: String, acceptHeader: String): S {

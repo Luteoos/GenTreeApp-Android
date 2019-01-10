@@ -1,6 +1,7 @@
 package io.github.luteoos.gent.network.api
 
 import io.github.luteoos.gent.network.api.request.authUserLogIn
+import io.github.luteoos.gent.network.api.request.userAvatar
 import io.github.luteoos.gent.network.api.response.authUserLogInResponse
 import io.github.luteoos.gent.network.api.response.getUserAvatarResponse
 import io.reactivex.Observable
@@ -15,4 +16,7 @@ interface UserApi {
 
     @GET("api/users/{id}/avatar")
     fun getUserAvatar(@Path("id") id: String ) : Single<Response<getUserAvatarResponse>>
+
+    @POST("api/users/avatar")
+    fun addUserAvatar(@Body avatar: userAvatar) : Single<Response<Unit>>
 }

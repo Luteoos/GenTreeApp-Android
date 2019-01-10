@@ -11,4 +11,6 @@
     <string name="change_avatar">Change avatar</string>
     <string name="logout">Logout</string>
     <string name="failed_load_avatar">Failed to load avatar!</string>
+    <string name="need_permission">Need permission to do it!</string>
+    <string name="error_upload">Upload failed!</string>
 </resources>

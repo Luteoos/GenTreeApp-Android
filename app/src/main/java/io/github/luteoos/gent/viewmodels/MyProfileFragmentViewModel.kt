@@ -1,18 +1,26 @@
 package io.github.luteoos.gent.viewmodels
 
+import android.net.Uri
+import androidx.core.net.toFile
 import com.luteoos.kotlin.mvvmbaselib.BaseViewModel
 import io.github.luteoos.gent.network.RestApi
+import io.github.luteoos.gent.network.api.MediaApi
 import io.github.luteoos.gent.network.api.UserApi
+import io.github.luteoos.gent.network.api.request.userAvatar
 import io.github.luteoos.gent.session.SessionManager
-import io.github.luteoos.gent.utils.Parameters
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
 
 class MyProfileFragmentViewModel : BaseViewModel() {
 
     val AVATAR_LOAD_SUCCESS = "AVATAR_LOAD_SUCCESS"
     val AVATAR_LOAD_FAILED = "AVATAR_LOAD_FAILED"
+    val FILE_UPLOAD_FAILED = "FILE_UPLOAD_FAILED"
+    val FILE_UPLOAD_SUCCESS = "FILE_UPLOAD_SUCCESS"
     var avatarByteString: String? = null
 
     fun getUserAvatarByte() {
@@ -30,6 +38,42 @@ class MyProfileFragmentViewModel : BaseViewModel() {
                     message.value = AVATAR_LOAD_FAILED
             },{
                 message.value = AVATAR_LOAD_FAILED
+            }))
+    }
+
+    fun uploadMediaToServer(file: File){
+        val client = RestApi.createService(MediaApi::class.java, SessionManager.accessToken!!)
+        disposable.add(client.uploadMedia(
+            MultipartBody.Part.createFormData("file", file.nameWithoutExtension, RequestBody.create(
+            MediaType.parse("image/*"), file
+            )))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                if(it.code()==200){
+                    if(!it.body()?.UUID.isNullOrEmpty())
+                        addMediaUUIDToAvatar(it.body()?.UUID!!)
+                    else
+                        message.value = FILE_UPLOAD_FAILED
+                }else
+                    message.value = FILE_UPLOAD_FAILED
+            },{
+                message.value = FILE_UPLOAD_FAILED
+            }))
+    }
+
+    fun addMediaUUIDToAvatar(uuid: String){
+        val client = RestApi.createService(UserApi::class.java, SessionManager.accessToken!!)
+        disposable.add(client.addUserAvatar(userAvatar(SessionManager.userUUDString!!, uuid))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                if(it.code()==200){
+                    message.value = FILE_UPLOAD_SUCCESS
+                }else
+                    message.value = FILE_UPLOAD_FAILED
+            },{
+                message.value = FILE_UPLOAD_FAILED
             }))
     }
 }

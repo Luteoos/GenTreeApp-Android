@@ -50,6 +50,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     //implementation project(path: ':mvvmBaseLib')
 
+    //androidx
+    implementation 'androidx.core:core-ktx:0.3'
 
     //anko
     implementation "org.jetbrains.anko:anko:0.10.7"
