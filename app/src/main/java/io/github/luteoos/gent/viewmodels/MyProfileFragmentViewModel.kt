@@ -18,6 +18,7 @@ import java.io.File
 class MyProfileFragmentViewModel : BaseViewModel() {
 
     val AVATAR_LOAD_SUCCESS = "AVATAR_LOAD_SUCCESS"
+    val AVATAR_LOAD_NO_AVATAR = "AVATAR_LOAD_NO_AVATAR"
     val AVATAR_LOAD_FAILED = "AVATAR_LOAD_FAILED"
     val FILE_UPLOAD_FAILED = "FILE_UPLOAD_FAILED"
     val FILE_UPLOAD_SUCCESS = "FILE_UPLOAD_SUCCESS"
@@ -31,11 +32,14 @@ class MyProfileFragmentViewModel : BaseViewModel() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                if(it.code()==200){
-                    avatarByteString = it.body()?.content
-                    message.value = AVATAR_LOAD_SUCCESS
-                }else
-                    message.value = AVATAR_LOAD_FAILED
+                when {
+                    it.code()==200 -> {
+                        avatarByteString = it.body()?.content
+                        message.value = AVATAR_LOAD_SUCCESS
+                    }
+                    it.code() == 204 -> message.value = AVATAR_LOAD_NO_AVATAR
+                    else -> message.value = AVATAR_LOAD_FAILED
+                }
             },{
                 message.value = AVATAR_LOAD_FAILED
             }))
@@ -51,8 +55,8 @@ class MyProfileFragmentViewModel : BaseViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 if(it.code()==200){
-                    if(!it.body()?.UUID.isNullOrEmpty())
-                        addMediaUUIDToAvatar(it.body()?.UUID!!)
+                    if(!it.body()?.id.isNullOrEmpty())
+                        addMediaUUIDToAvatar(it.body()?.id!!)
                     else
                         message.value = FILE_UPLOAD_FAILED
                 }else

@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat
 import android.util.Base64
 import android.view.View
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.luteoos.kotlin.mvvmbaselib.BaseFragmentMVVM
 import es.dmoral.toasty.Toasty
 import io.github.luteoos.gent.R
@@ -44,13 +45,22 @@ class MyProfileFragment : BaseFragmentMVVM<MyProfileFragmentViewModel>() {
             viewModel.AVATAR_LOAD_SUCCESS -> {
                 loadAvatar(viewModel.avatarByteString!!)
                 avatarProgressBar.visibility = View.GONE
+                tvNoAvatar.visibility = View.GONE
+            }
+            viewModel.AVATAR_LOAD_NO_AVATAR -> {
+                //todo put smth to indicate that no avatar in there
+                avatarProgressBar.visibility = View.GONE
+                tvNoAvatar.visibility = View.GONE
             }
             viewModel.AVATAR_LOAD_FAILED -> {
                 tvNoAvatar.visibility = View.VISIBLE
                 avatarProgressBar.visibility = View.GONE
             }
             viewModel.FILE_UPLOAD_SUCCESS -> reloadAvatar()
-            viewModel.FILE_UPLOAD_FAILED -> Toasty.error(context!!, R.string.error_upload).show()
+            viewModel.FILE_UPLOAD_FAILED -> {
+                avatarProgressBar.visibility = View.GONE
+                Toasty.error(context!!, R.string.error_upload).show()
+            }
         }
     }
 
@@ -81,6 +91,7 @@ class MyProfileFragment : BaseFragmentMVVM<MyProfileFragmentViewModel>() {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 CHANGE_AVATAR -> {
+                    avatarProgressBar.visibility = View.VISIBLE
                     val uri = data?.data
                     val file = UriResolver.getFileFromUri(uri!!, context!!.contentResolver)
                     viewModel.uploadMediaToServer(file)
@@ -114,6 +125,7 @@ class MyProfileFragment : BaseFragmentMVVM<MyProfileFragmentViewModel>() {
         Glide.with(this)
             .asBitmap()
             .load(byteArray)
+            .apply(RequestOptions().circleCrop())
             .into(iv_profile_pic)
     }
 
