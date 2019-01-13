@@ -6,6 +6,7 @@ import com.luteoos.kotlin.mvvmbaselib.BaseActivityMVVM
 import es.dmoral.toasty.Toasty
 import io.github.luteoos.gent.R
 import io.github.luteoos.gent.view.fragment.MyProfileFragment
+import io.github.luteoos.gent.view.fragment.TreeListFragment
 import io.github.luteoos.gent.viewmodels.MainScreenViewModel
 import kotlinx.android.synthetic.main.activity_main_screen.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
@@ -34,7 +35,10 @@ class MainScreenActivity : BaseActivityMVVM<MainScreenViewModel>() {
     }
 
     private fun showTreesFragment(){
-
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.main_fragment, TreeListFragment())
+            .commit()
     }
 
     private fun showProfileFragment(){
