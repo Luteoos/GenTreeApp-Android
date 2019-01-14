@@ -1,5 +1,6 @@
 package io.github.luteoos.gent.viewmodels
 
+import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
 import androidx.core.net.toFile
 import com.luteoos.kotlin.mvvmbaselib.BaseViewModel
@@ -17,32 +18,34 @@ import java.io.File
 
 class MyProfileFragmentViewModel : BaseViewModel() {
 
-    val AVATAR_LOAD_SUCCESS = "AVATAR_LOAD_SUCCESS"
     val AVATAR_LOAD_NO_AVATAR = "AVATAR_LOAD_NO_AVATAR"
     val AVATAR_LOAD_FAILED = "AVATAR_LOAD_FAILED"
     val FILE_UPLOAD_FAILED = "FILE_UPLOAD_FAILED"
     val FILE_UPLOAD_SUCCESS = "FILE_UPLOAD_SUCCESS"
-    var avatarByteString: String? = null
+    val avatarByteString: MutableLiveData<String> = MutableLiveData()
 
     fun getUserAvatarByte() {
-        avatarByteString = null
-
-        val client = RestApi.createService(UserApi::class.java, SessionManager.accessToken!!)
-        disposable.add(client.getUserAvatar(SessionManager.userUUDString!!)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                when {
-                    it.code()==200 -> {
-                        avatarByteString = it.body()?.content
-                        message.value = AVATAR_LOAD_SUCCESS
+        if(SessionManager.avatar != "")
+            avatarByteString.value = SessionManager.avatar
+        else {
+            val client = RestApi.createService(UserApi::class.java, SessionManager.accessToken!!)
+            disposable.add(client.getUserAvatar(SessionManager.userUUDString!!)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    when {
+                        it.code() == 200 -> {
+                            avatarByteString.value = it.body()?.content
+                            SessionManager.avatar = it.body()?.content
+                        }
+                        it.code() == 204 -> message.value = AVATAR_LOAD_NO_AVATAR
+                        else -> message.value = AVATAR_LOAD_FAILED
                     }
-                    it.code() == 204 -> message.value = AVATAR_LOAD_NO_AVATAR
-                    else -> message.value = AVATAR_LOAD_FAILED
-                }
-            },{
-                message.value = AVATAR_LOAD_FAILED
-            }))
+                }, {
+                    message.value = AVATAR_LOAD_FAILED
+                })
+            )
+        }
     }
 
     fun uploadMediaToServer(file: File){
@@ -73,6 +76,7 @@ class MyProfileFragmentViewModel : BaseViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 if(it.code()==200){
+                    SessionManager.avatar = null
                     message.value = FILE_UPLOAD_SUCCESS
                 }else
                     message.value = FILE_UPLOAD_FAILED

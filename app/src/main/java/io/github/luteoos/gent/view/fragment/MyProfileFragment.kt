@@ -2,9 +2,9 @@ package io.github.luteoos.gent.view.fragment
 
 import android.Manifest
 import android.app.Activity
+import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -21,8 +21,6 @@ import io.github.luteoos.gent.viewmodels.MyProfileFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_my_profile.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.ctx
-import java.io.File
-import java.io.FileOutputStream
 
 class MyProfileFragment : BaseFragmentMVVM<MyProfileFragmentViewModel>() {
 
@@ -42,18 +40,14 @@ class MyProfileFragment : BaseFragmentMVVM<MyProfileFragmentViewModel>() {
 
     override fun onVMMessage(msg: String?) {
         when(msg){
-            viewModel.AVATAR_LOAD_SUCCESS -> {
-                loadAvatar(viewModel.avatarByteString!!)
-                avatarProgressBar.visibility = View.GONE
-                tvNoAvatar.visibility = View.GONE
-            }
             viewModel.AVATAR_LOAD_NO_AVATAR -> {
-                //todo put smth to indicate that no avatar in there
                 avatarProgressBar.visibility = View.GONE
-                tvNoAvatar.visibility = View.GONE
+                tvErrorAvatar.visibility = View.GONE
+                tvNoAvatar.visibility = View.VISIBLE
             }
             viewModel.AVATAR_LOAD_FAILED -> {
-                tvNoAvatar.visibility = View.VISIBLE
+                tvErrorAvatar.visibility = View.VISIBLE
+                avatarProgressBar.visibility = View.GONE
                 avatarProgressBar.visibility = View.GONE
             }
             viewModel.FILE_UPLOAD_SUCCESS -> reloadAvatar()
@@ -81,7 +75,7 @@ class MyProfileFragment : BaseFragmentMVVM<MyProfileFragmentViewModel>() {
         if(isNetworkOnLine)
             viewModel.getUserAvatarByte()
         else {
-            tvNoAvatar.visibility = View.VISIBLE
+            tvErrorAvatar.visibility = View.VISIBLE
             avatarProgressBar.visibility = View.GONE
         }
     }
@@ -111,6 +105,14 @@ class MyProfileFragment : BaseFragmentMVVM<MyProfileFragmentViewModel>() {
         btnLogout.onClick {
             SessionManager.logout(context!!)
         }
+        viewModel.avatarByteString.observe(this, Observer {
+            if(it != null){
+                loadAvatar(it)
+                avatarProgressBar.visibility = View.GONE
+                tvErrorAvatar.visibility = View.GONE
+                avatarProgressBar.visibility = View.GONE
+            }
+        })
     }
 
     private fun openStorageForImage(){
@@ -142,7 +144,7 @@ class MyProfileFragment : BaseFragmentMVVM<MyProfileFragmentViewModel>() {
         if(isNetworkOnLine)
             viewModel.getUserAvatarByte()
         else {
-            tvNoAvatar.visibility = View.VISIBLE
+            tvErrorAvatar.visibility = View.VISIBLE
             avatarProgressBar.visibility = View.GONE
         }
     }

@@ -22,10 +22,10 @@ class RVTreesList(val list: MutableList<getTreesListAssignedToUser>,
     override fun onBindViewHolder(view: RVTreesListViewHolder, position: Int) {
         view.name.text = list[position].name
         view.btnOpen.onClick {
-            Toasty.info(context, "NOT IMPLEMENTED")
+            Toasty.info(context, "NOT IMPLEMENTED").show()
         }
         view.btnDelete.onClick {
-            Toasty.info(context, "NOT IMPLEMENTED")
+            Toasty.info(context, "NOT IMPLEMENTED").show()
         }
     }
 

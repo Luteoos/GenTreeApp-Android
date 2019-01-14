@@ -33,6 +33,12 @@ object SessionManager {
             preferences.edit().putString(USER_NAME, value).apply()
         }
 
+    var avatar: String?
+        get() = preferences.getString(USER_AVATAR, "")
+        set(value) {
+            preferences.edit().putString(USER_AVATAR, value).apply()
+        }
+
     var accessToken: String?
         get() = preferences.getString(ACCESS_TOKEN, "")
         set(value) {
@@ -53,4 +59,5 @@ object SessionManager {
     private val FIRST_NAME = "FIRST_NAME"
     private val LAST_NAME = "LAST_NAME"
     private val EMAIL = "EMAIL"
+    private val USER_AVATAR = "USER_AVATAR"
 }

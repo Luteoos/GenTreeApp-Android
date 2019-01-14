@@ -11,6 +11,7 @@
     <string name="change_avatar">Change avatar</string>
     <string name="logout">Logout</string>
     <string name="failed_load_avatar">Failed to load avatar!</string>
+    <string name="no_avatar_load">No avatar</string>
     <string name="need_permission">Need permission to do it!</string>
     <string name="error_upload">Upload failed!</string>
     <string name="tree_list_title">Your trees</string>

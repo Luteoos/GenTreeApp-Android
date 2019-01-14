@@ -6,26 +6,26 @@
     <TextView
             android:text="TextView"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:id="@+id/tvTreeName" android:layout_marginTop="8dp"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="8dp"
-            android:textSize="18sp" android:textStyle="italic" android:layout_marginEnd="8dp"
+            android:textSize="24sp" android:textStyle="italic" android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toStartOf="@+id/ivOpenTree" app:layout_constraintStart_toEndOf="@+id/ivDelete"
-            android:layout_marginStart="8dp"/>
+            android:layout_marginStart="9dp"/>
     <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_baseline_play_arrow_24px"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:id="@+id/ivOpenTree"
             app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="8dp"
             app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-    />
+            android:background="@drawable/ic_baseline_play_arrow_24px"/>
     <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_baseline_delete_24px"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:id="@+id/ivDelete" app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="8dp" app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="8dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp"/>
+            android:layout_marginStart="8dp" android:background="@drawable/ic_baseline_delete_24px"/>
 </android.support.constraint.ConstraintLayout>
