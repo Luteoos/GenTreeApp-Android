@@ -21,8 +21,8 @@
     <application android:name=".GenTStartup"
                  android:allowBackup="true"
                  android:label="@string/app_name"
-                 android:icon="@mipmap/ic_launcher"
-                 android:roundIcon="@mipmap/ic_launcher_round"
+                 android:icon="@mipmap/ic_lau_gentree"
+                 android:roundIcon="@mipmap/ic_lau_gentree_round"
                  android:supportsRtl="true"
                  android:theme="@style/AppTheme" tools:ignore="GoogleAppIndexingWarning">
     <activity
@@ -42,6 +42,10 @@
                 android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
                 android:name=".view.activity.MainScreenActivity"
+                android:theme="@style/LandingTheme"
+                android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+                android:name=".view.activity.TreeActivity"
                 android:theme="@style/LandingTheme"
                 android:windowSoftInputMode="stateHidden|adjustPan" />
     </application>

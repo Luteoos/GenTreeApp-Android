@@ -1,6 +1,7 @@
 package io.github.luteoos.gent.view.fragment
 
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
@@ -48,5 +49,10 @@ class TreeListFragment: BaseFragmentMVVM<TreeListViewModel>() {
             layoutManager = LinearLayoutManager(context)
             adapter = RVTreesList(list, context)
         }
+        val adapter = rvTree.adapter!! as RVTreesList
+        adapter.intent.observe(this, Observer {
+            if(it != null)
+                startActivity(it)
+        })
     }
 }
