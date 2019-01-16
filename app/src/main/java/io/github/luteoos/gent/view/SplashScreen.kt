@@ -2,6 +2,7 @@ package io.github.luteoos.gent.view
 
 import android.content.Intent
 import android.os.Bundle
+import com.bumptech.glide.Glide
 import io.github.luteoos.gent.R
 import io.github.luteoos.gent.viewmodels.SplashScreenViewModel
 import com.luteoos.kotlin.mvvmbaselib.BaseActivityMVVM
@@ -21,7 +22,10 @@ class SplashScreen : BaseActivityMVVM<SplashScreenViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = SplashScreenViewModel()
-        button.onClick { startLogInActivity() }
+        Glide.with(this)
+            .load(getDrawable(R.drawable.gentree_logo))
+            .into(ivLogo)
+        ivLogo.onClick { startLogInActivity() }
         if(isAlreadyLoggedIn())
             startMainScreenActivity()
     }

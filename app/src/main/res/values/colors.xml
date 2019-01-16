@@ -27,7 +27,7 @@
         <color name="colorSettingsSectionFont">#6D6D68</color>
         <color name="colorLine">#E3E3E5</color>
         <color name="colorSettingsImageBackground">#949494</color>
-        <color name="colorBackgroundPlaceHolder">#C6C6C6</color>
+        <color name="colorBackgroundPlaceHolder">#dc5454</color>
         <color name="colorHintTextSettings">#A9A9A9</color>
         <color name="colorBlueButton">#297CF6</color>
         <color name="colorGreyBackgroundFlagFragment">#fbfbfb</color>
