@@ -16,6 +16,7 @@ import com.luteoos.kotlin.mvvmbaselib.BaseFragmentMVVM
 import es.dmoral.toasty.Toasty
 import io.github.luteoos.gent.R
 import io.github.luteoos.gent.session.SessionManager
+import io.github.luteoos.gent.utils.OnSwipeDetector
 import io.github.luteoos.gent.utils.UriResolver
 import io.github.luteoos.gent.viewmodels.MyProfileFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_my_profile.*

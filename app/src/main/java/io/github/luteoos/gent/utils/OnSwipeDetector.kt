@@ -4,10 +4,17 @@ import android.content.Context
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
+import es.dmoral.toasty.Toasty
 import timber.log.Timber
 import java.lang.Exception
 
-class OnSwipeDetector(ctx: Context) : View.OnTouchListener {
+//        iv_profile_pic.setOnTouchListener(object: OnSwipeDetector(context!!){
+//            override fun onSwipeBottom() {
+//                Toasty.info(context!!,"xDD").show()
+//            }
+//        })
+
+open class OnSwipeDetector(val ctx: Context) : View.OnTouchListener {
 
     private val detector: GestureDetector
 
@@ -19,16 +26,20 @@ class OnSwipeDetector(ctx: Context) : View.OnTouchListener {
         return detector.onTouchEvent(event)
     }
 
-    fun onSwipeTop(){
+    open fun onSwipeTop(){
+        Toasty.info(ctx, "top").show()
     }
 
-    fun onSwipeBottom(){
+    open fun onSwipeBottom(){
+        Toasty.info(ctx, "bot").show()
     }
 
-    fun onSwipeLeft(){
+    open fun onSwipeLeft(){
+        Toasty.info(ctx, "left").show()
     }
 
-    fun onSwipeRight(){
+    open fun onSwipeRight(){
+        Toasty.info(ctx, "right").show()
     }
 
     private class GestureListener(val owner: OnSwipeDetector) : GestureDetector.SimpleOnGestureListener(){
