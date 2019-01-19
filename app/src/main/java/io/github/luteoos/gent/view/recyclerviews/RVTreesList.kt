@@ -29,7 +29,7 @@ class RVTreesList(val list: MutableList<getTreesListAssignedToUser>,
         view.name.text = list[position].name
         view.btnOpen.onClick {
             val intent = Intent(context, TreeActivity::class.java)
-            intent.putExtra(Parameters.TREE_UUD, list[position].id)
+            intent.putExtra(Parameters.TREE_UUID, list[position].id)
             intent.putExtra(Parameters.TREE_NAME, list[position].name)
             this@RVTreesList.intent.value = intent
         }
