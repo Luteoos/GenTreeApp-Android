@@ -16,12 +16,13 @@ import com.luteoos.kotlin.mvvmbaselib.BaseFragmentMVVM
 import es.dmoral.toasty.Toasty
 import io.github.luteoos.gent.R
 import io.github.luteoos.gent.session.SessionManager
-import io.github.luteoos.gent.utils.OnSwipeDetector
 import io.github.luteoos.gent.utils.UriResolver
+import io.github.luteoos.gent.utils.UrlResolver
 import io.github.luteoos.gent.viewmodels.MyProfileFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_my_profile.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.ctx
+import java.net.URL
 
 class MyProfileFragment : BaseFragmentMVVM<MyProfileFragmentViewModel>() {
 
@@ -106,7 +107,7 @@ class MyProfileFragment : BaseFragmentMVVM<MyProfileFragmentViewModel>() {
         btnLogout.onClick {
             SessionManager.logout(context!!)
         }
-        viewModel.avatarByteString.observe(this, Observer {
+        viewModel.avatarURL.observe(this, Observer {
             if(it != null){
                 loadAvatar(it)
                 avatarProgressBar.visibility = View.GONE
@@ -123,11 +124,9 @@ class MyProfileFragment : BaseFragmentMVVM<MyProfileFragmentViewModel>() {
         startActivityForResult(Intent.createChooser(intent, null), CHANGE_AVATAR)
     }
 
-    private fun loadAvatar(bytes: String){
-        val byteArray = Base64.decode(bytes, Base64.DEFAULT)
+    private fun loadAvatar(url: String){
         Glide.with(this)
-            .asBitmap()
-            .load(byteArray)
+            .load(url)
             .apply(RequestOptions().circleCrop())
             .into(iv_profile_pic)
     }

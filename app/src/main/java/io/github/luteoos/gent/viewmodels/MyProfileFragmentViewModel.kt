@@ -1,8 +1,6 @@
 package io.github.luteoos.gent.viewmodels
 
 import android.arch.lifecycle.MutableLiveData
-import android.net.Uri
-import androidx.core.net.toFile
 import com.luteoos.kotlin.mvvmbaselib.BaseViewModel
 import io.github.luteoos.gent.network.RestApi
 import io.github.luteoos.gent.network.api.MediaApi
@@ -22,11 +20,11 @@ class MyProfileFragmentViewModel : BaseViewModel() {
     val AVATAR_LOAD_FAILED = "AVATAR_LOAD_FAILED"
     val FILE_UPLOAD_FAILED = "FILE_UPLOAD_FAILED"
     val FILE_UPLOAD_SUCCESS = "FILE_UPLOAD_SUCCESS"
-    val avatarByteString: MutableLiveData<String> = MutableLiveData()
+    val avatarURL: MutableLiveData<String> = MutableLiveData()
 
     fun getUserAvatarByte() {
         if(SessionManager.avatar != "")
-            avatarByteString.value = SessionManager.avatar
+            avatarURL.value = SessionManager.avatar
         else {
             val client = RestApi.createService(UserApi::class.java, SessionManager.accessToken!!)
             disposable.add(client.getUserAvatar(SessionManager.userUUDString!!)
@@ -35,8 +33,8 @@ class MyProfileFragmentViewModel : BaseViewModel() {
                 .subscribe({
                     when {
                         it.code() == 200 -> {
-                            avatarByteString.value = it.body()?.content
-                            SessionManager.avatar = it.body()?.content
+                            avatarURL.value = it.body()?.url
+                            SessionManager.avatar = it.body()?.url
                         }
                         it.code() == 204 -> message.value = AVATAR_LOAD_NO_AVATAR
                         else -> message.value = AVATAR_LOAD_FAILED
