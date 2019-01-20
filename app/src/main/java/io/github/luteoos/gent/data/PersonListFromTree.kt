@@ -2,9 +2,10 @@ package io.github.luteoos.gent.data
 
 import io.github.luteoos.gent.network.api.dataobjects.PersonDTO
 
-object TreeListPersons {
+object PersonListFromTree {
     const val PERSON_MARRIAGE = "Marriage"
     const val PERSON_CHILD = "Child"
+    const val PERSON_PARENT = "Parent"
     const val PERSON_MALE = "Male"
     const val PERSON_FEMALE = "Female"
 
