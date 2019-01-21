@@ -10,6 +10,8 @@ class PersonCardFragment() : BaseFragmentMVVM<PersonCardViewModel>() {
 
     private var uuid = ""
 
+    override fun getLayoutID(): Int = R.layout.fragment_person_card
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
@@ -18,8 +20,6 @@ class PersonCardFragment() : BaseFragmentMVVM<PersonCardViewModel>() {
         this.uuid = uuid
         //TODO do all work with loading personal data here
     }
-
-    override fun getLayoutID(): Int = R.layout.fragment_person_card
 
     override fun onVMMessage(msg: String?) {
     }
