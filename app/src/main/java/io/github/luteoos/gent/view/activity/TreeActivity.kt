@@ -9,6 +9,7 @@ import es.dmoral.toasty.Toasty
 import io.github.luteoos.gent.R
 import io.github.luteoos.gent.data.PersonListFromTree
 import io.github.luteoos.gent.utils.Event
+import io.github.luteoos.gent.utils.OnSwipeDetector
 import io.github.luteoos.gent.utils.Parameters
 import io.github.luteoos.gent.view.fragment.PersonCardFragment
 import io.github.luteoos.gent.viewmodels.TreeViewModel
@@ -34,6 +35,11 @@ class TreeActivity : BaseActivityMVVM<TreeViewModel>() {
         setFragment(personCardFragment)
     }
 
+    override fun onResume() {
+        super.onResume()
+        connectToBus()
+    }
+
     override fun finish() {
         super.finish()
         PersonListFromTree.Clear()
@@ -50,7 +56,8 @@ class TreeActivity : BaseActivityMVVM<TreeViewModel>() {
                 if (PersonListFromTree.list!!.isNotEmpty()) {
                     card_person_fragment.visibility = View.VISIBLE
                     personCardFragment.setFragmentPersonUUID(PersonListFromTree.list!!.first().id)
-                }
+                }else
+                    Toasty.warning(this, R.string.warning_tree_empty).show()
             }
         }
     }
@@ -59,13 +66,25 @@ class TreeActivity : BaseActivityMVVM<TreeViewModel>() {
         ivBack.onClick {
             onBackPressed()
         }
+        csLayoutTreeActivity.setOnTouchListener(object : OnSwipeDetector(this){
+            override fun onSwipeBottom() {
+                switchSpinnerVisibility(true)
+                card_person_fragment.visibility = View.GONE
+                personCardFragment.resetUUID()
+                viewModel.getTreeFromRest(treeUUID)
+            }
+        })
     }
 
     private fun connectToBus(){
-        Bus.observe<Event.MessageWithUUID>().subscribe{
-            when(it.message){
-                Parameters.SWITCH_TO_PERSON_WITH_UUID -> {
-                    personCardFragment.setFragmentPersonUUID(it.uuid.toString())
+        Bus.observe<Event.MessageWithUUID>()
+            .subscribe{
+                runOnUiThread {
+                    when(it.message) {
+                        Parameters.SWITCH_TO_PERSON_WITH_UUID -> {
+                            card_person_fragment.visibility = View.VISIBLE
+                            personCardFragment.setFragmentPersonUUID(it.uuid.toString())
+                        }
                 }
             }
         }

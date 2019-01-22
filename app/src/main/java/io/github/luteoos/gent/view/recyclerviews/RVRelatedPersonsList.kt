@@ -33,8 +33,16 @@ class RVRelatedPersonsList(val listPersonsUUID: MutableList<String>,
         }else
             view.layout.tvName.text = context.getString(R.string.api_error)
         view.layout.onClick {
-            Bus.send(Event.MessageWithUUID(UUID.fromString(listPersonsUUID[position]),
-                Parameters.SWITCH_TO_PERSON_WITH_UUID))
+            try {
+                Bus.send(
+                    Event.MessageWithUUID(
+                        UUID.fromString(listPersonsUUID[position]),
+                        Parameters.SWITCH_TO_PERSON_WITH_UUID
+                    )
+                )
+            }catch (e: Exception){
+
+            }
         }
     }
 

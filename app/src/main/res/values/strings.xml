@@ -3,7 +3,8 @@
     <string name="login_button">Log In</string>
     <string name="UsernameTip">Username</string>
     <string name="PasswordTip">Password</string>
-    <string name="api_error">No connection!</string>
+    <string name="api_error">Server response failed!</string>
+    <string name="no_internet">No connection!</string>
     <string name="error">Error!</string>
     <string name="login_failed">Wrong username or password!</string>
     <string name="profile_icon">My Profile</string>
@@ -24,4 +25,12 @@
     <string name="card_marriage">Marriage to</string>
     <string name="card_siblings_vertical">S\ni\nb\nl\ni\nn\ng\ns</string>
     <string name="card_marriage_vertical">M\na\nr\nr\ni\na\ng\ne\n \nt\no</string>
+    <string name="warning_tree_empty">Tree is empty! Add new relatives</string>
+    <string name="person_sex_male">Male</string>
+    <string name="person_sex_female">Female</string>
+    <string name="person_sex">Sex:</string>
+    <string name="person_sex_undefined">Undefined</string>
+    <string name="no_information">No Information</string>
+    <string name="birth_date_person">Date of Birth:</string>
+    <string name="death_date_person">Date of Death:</string>
 </resources>

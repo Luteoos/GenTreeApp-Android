@@ -1,4 +1,4 @@
 package io.github.luteoos.gent.network.api.dataobjects
 
-class CommentDto {
+class CommentDto(var id: String, var body: String) {
 }

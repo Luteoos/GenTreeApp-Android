@@ -1,8 +1,12 @@
 package io.github.luteoos.gent.view.fragment
 
+import android.app.Person
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.luteoos.kotlin.mvvmbaselib.BaseFragmentMVVM
 import es.dmoral.toasty.Toasty
 import io.github.luteoos.gent.R
@@ -23,14 +27,18 @@ class PersonCardFragment : BaseFragmentMVVM<PersonCardViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = PersonCardViewModel()
+        this.connectToVMMessage()
     }
 
     fun setFragmentPersonUUID(uuid: String){
+        ivPersonAvatar.setImageDrawable(null)
         setAllTvRvToDeafult()
+        resetTvVisibility()
         this.uuid = uuid
         setRV()
         setBindings()
-        //TODO do all work with loading personal data here
+        setCardPersonData()
+        setAvatarSpinnerVisibility(true)
     }
 
     private fun setRV(){
@@ -56,34 +64,88 @@ class PersonCardFragment : BaseFragmentMVVM<PersonCardViewModel>() {
         }
     }
 
+    private fun setCardPersonData(){
+        val person = PersonListFromTree.getPerson(uuid)
+        if (person != null){
+            tvPersonName.text = person.details.name
+            tvPersonSurname.text = person.details.surname
+            tvPersonSex.text =
+                    when(person.details.sex){
+                        PersonListFromTree.PERSON_FEMALE -> getString(R.string.person_sex_female)
+                        PersonListFromTree.PERSON_MALE -> getString(R.string.person_sex_male)
+                        else -> getString(R.string.person_sex_undefined)
+            }
+            if(PersonListFromTree.getPersonDeathDate(person,activity!!) == getString(R.string.no_information)){
+                tvDeathDateText.visibility = View.GONE
+                tvDeath.visibility = View.GONE
+            }else{
+                tvDeath.visibility = View.VISIBLE
+                tvDeath.text = PersonListFromTree.getPersonDeathDate(person,activity!!)
+                tvDeathDateText.visibility = View.VISIBLE
+            }
+            tvBirth.text = PersonListFromTree.getPersonBirthDate(person,activity!!)
+            if(isNetworkOnLine)
+                viewModel.getPersonAvatar(uuid)
+        }else
+            Toasty.error(activity!!,R.string.api_error).show()
+    }
+
     private fun setBindings(){
-        this.view!!.onClick { setAllTvRvToDeafult() }
+        if(rvParents.adapter?.itemCount == 0)
+            tvParentsText.visibility = View.INVISIBLE
+        if(rvSiblings.adapter?.itemCount == 0)
+            tvSiblingsText.visibility = View.INVISIBLE
+        if(rvMarriage.adapter?.itemCount == 0)
+            tvMarriageText.visibility = View.INVISIBLE
+        if(rvChildren.adapter?.itemCount == 0)
+            tvChildrenText.visibility = View.INVISIBLE
+
         this.view!!.setOnTouchListener(object : OnSwipeDetector(context!!){
             override fun onSwipeTop() {
-                setAllTvRvToDeafult()
-                rvParents.visibility = View.VISIBLE
+                if(rvParents.adapter?.itemCount != 0){
+                    setAllTvRvToDeafult()
+                    cardViewPersonData.visibility = View.GONE
+                    rvParents.visibility = View.VISIBLE
+                }
             }
 
             override fun onSwipeLeft() {
-                setAllTvRvToDeafult()
-                setTvMarriageToVertical(false)
-                rvMarriage.visibility = View.VISIBLE
+                if(rvMarriage.adapter?.itemCount != 0) {
+                    setAllTvRvToDeafult()
+                    setTvMarriageToVertical(false)
+                    cardViewPersonData.visibility = View.GONE
+                    rvMarriage.visibility = View.VISIBLE
+                }
             }
 
             override fun onSwipeRight() {
-                setAllTvRvToDeafult()
-                setTvSiblingToVertical(false)
-                rvSiblings.visibility = View.VISIBLE
+                if(rvSiblings.adapter?.itemCount != 0) {
+                    setAllTvRvToDeafult()
+                    setTvSiblingToVertical(false)
+                    cardViewPersonData.visibility = View.GONE
+                    rvSiblings.visibility = View.VISIBLE
+                }
             }
 
             override fun onSwipeBottom() {
-                setAllTvRvToDeafult()
-                rvChildren.visibility = View.VISIBLE
+                if(rvChildren.adapter?.itemCount != 0) {
+                    setAllTvRvToDeafult()
+                    cardViewPersonData.visibility = View.GONE
+                    rvChildren.visibility = View.VISIBLE
+                }
             }
 
             override fun onAnyActionPerformed() {
                 setAllTvRvToDeafult()
             }
+        })
+        viewModel.avatarURL.observe(this, Observer {
+            if(it != null)
+                if (viewModel.lastUUID.value == uuid)
+                    loadAvatar(it)
+            else
+                onVMMessage(viewModel.AVATAR_LOAD_FAILED)
+            setAvatarSpinnerVisibility(false)
         })
     }
 
@@ -108,8 +170,56 @@ class PersonCardFragment : BaseFragmentMVVM<PersonCardViewModel>() {
         rvParents.visibility = View.GONE
         rvMarriage.visibility = View.GONE
         rvSiblings.visibility = View.GONE
+        cardViewPersonData.visibility = View.VISIBLE
+    }
+
+    private fun resetTvVisibility(){
+        tvChildrenText.visibility = View.VISIBLE
+        tvMarriageText.visibility = View.VISIBLE
+        tvSiblingsText.visibility = View.VISIBLE
+        tvParentsText.visibility = View.VISIBLE
     }
 
     override fun onVMMessage(msg: String?) {
+        when(msg){
+            viewModel.AVATAR_LOAD_FAILED -> {
+                if (viewModel.lastUUID.value == uuid) {
+                    Toasty.error(activity!!, R.string.failed_load_avatar).show()
+                    setAvatarSpinnerVisibility(false)
+                }
+            }
+            viewModel.AVATAR_LOAD_NO_AVATAR -> {
+                if (viewModel.lastUUID.value == uuid) {
+                    Toasty.info(activity!!, R.string.no_avatar_load).show()
+                    loadNoAvatar()
+                    setAvatarSpinnerVisibility(false)
+                }
+            }
+        }
+    }
+
+    private fun setAvatarSpinnerVisibility(boolean: Boolean){
+        when(boolean){
+            true -> spinnerAvatarPerson.visibility = View.VISIBLE
+            false -> spinnerAvatarPerson.visibility = View.GONE
+        }
+    }
+
+    private fun loadAvatar(url: String){
+        Glide.with(this)
+            .load(url)
+            .apply(RequestOptions().circleCrop())
+            .into(ivPersonAvatar)
+    }
+
+    private fun loadNoAvatar(){
+        Glide.with(this)
+            .load(R.drawable.no_avatar)
+            .apply(RequestOptions().circleCrop())
+            .into(ivPersonAvatar)
+    }
+
+    fun resetUUID(){
+        uuid = ""
     }
 }
