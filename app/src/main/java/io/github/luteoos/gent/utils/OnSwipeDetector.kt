@@ -42,18 +42,22 @@ open class OnSwipeDetector(val ctx: Context) : View.OnTouchListener {
         Toasty.info(ctx, "right").show()
     }
 
+    open fun onAnyActionPerformed(){
+
+    }
+
     private class GestureListener(val owner: OnSwipeDetector) : GestureDetector.SimpleOnGestureListener(){
 
         private val SWIPE_THRESHOLD = 100
         private val SWIPE_VELOCITY_THRESHOLD = 100
 
         override fun onDown(e: MotionEvent?): Boolean {
+            owner.onAnyActionPerformed()
             return true
         }
 
         override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
             var result = false
-
             try {
                 val diffY = e2!!.y - e1!!.y
                 val diffX = e2.x - e1.x

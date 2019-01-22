@@ -16,4 +16,12 @@
     <string name="error_upload">Upload failed!</string>
     <string name="tree_list_title">Your trees</string>
     <string name="welcome">WELCOME</string>
+    <string name="person_name">Name</string>
+    <string name="person_surname">Surname</string>
+    <string name="card_children">Children</string>
+    <string name="card_parents">Parents</string>
+    <string name="card_siblings">Siblings</string>
+    <string name="card_marriage">Marriage to</string>
+    <string name="card_siblings_vertical">S\ni\nb\nl\ni\nn\ng\ns</string>
+    <string name="card_marriage_vertical">M\na\nr\nr\ni\na\ng\ne\n \nt\no</string>
 </resources>

@@ -33,7 +33,7 @@ class RVTreesList(val list: MutableList<getTreesListAssignedToUser>,
             intent.putExtra(Parameters.TREE_NAME, list[position].name)
             this@RVTreesList.intent.value = intent
         }
-        view.btnDelete.onClick {
+        view.btnDelete.onClick {//TODO call api to delete tree
             Toasty.info(context, "NOT IMPLEMENTED").show()
         }
     }

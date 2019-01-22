@@ -1,6 +1,7 @@
 package io.github.luteoos.gent.view.activity
 
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.view.View
 import com.eightbitlab.rxbus.Bus
 import com.luteoos.kotlin.mvvmbaselib.BaseActivityMVVM
@@ -9,6 +10,7 @@ import io.github.luteoos.gent.R
 import io.github.luteoos.gent.data.PersonListFromTree
 import io.github.luteoos.gent.utils.Event
 import io.github.luteoos.gent.utils.Parameters
+import io.github.luteoos.gent.view.fragment.PersonCardFragment
 import io.github.luteoos.gent.viewmodels.TreeViewModel
 import kotlinx.android.synthetic.main.activity_tree.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
@@ -16,6 +18,7 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class TreeActivity : BaseActivityMVVM<TreeViewModel>() {
     private lateinit var treeUUID : String
+    private lateinit var personCardFragment: PersonCardFragment
 
     override fun getLayoutID(): Int = R.layout.activity_tree
 
@@ -27,6 +30,8 @@ class TreeActivity : BaseActivityMVVM<TreeViewModel>() {
         setBindings()
         connectToBus()
         viewModel.getTreeFromRest(treeUUID)
+        personCardFragment = PersonCardFragment()
+        setFragment(personCardFragment)
     }
 
     override fun finish() {
@@ -41,7 +46,11 @@ class TreeActivity : BaseActivityMVVM<TreeViewModel>() {
                 Toasty.error(this, R.string.api_error)
             }
             viewModel.GET_LIST_SUCCESSFUL -> {
-                //TODO here load first person in tree to fragment and create fragment
+                switchSpinnerVisibility(false)
+                if (PersonListFromTree.list!!.isNotEmpty()) {
+                    card_person_fragment.visibility = View.VISIBLE
+                    personCardFragment.setFragmentPersonUUID(PersonListFromTree.list!!.first().id)
+                }
             }
         }
     }
@@ -56,10 +65,16 @@ class TreeActivity : BaseActivityMVVM<TreeViewModel>() {
         Bus.observe<Event.MessageWithUUID>().subscribe{
             when(it.message){
                 Parameters.SWITCH_TO_PERSON_WITH_UUID -> {
-                    //TODO here switch person on card
+                    personCardFragment.setFragmentPersonUUID(it.uuid.toString())
                 }
             }
         }
+    }
+
+    private fun setFragment(fragment: Fragment){
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.card_person_fragment, fragment)
+            .commitAllowingStateLoss()
     }
 
     private fun getDataFromIntent(){
