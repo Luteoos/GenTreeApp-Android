@@ -13,7 +13,7 @@ interface PersonApi {
     fun getPersonAvatar(@Path("id") id: String) : Single<Response<MediaDtoResponse>>
 
     @PUT("api/persons/{id}/media/{mediaID}/avatar")
-    fun putPersonAvatarUUID(@Path("id")id: String, @Path("mediaID") mediaID: String) : Single<Response<Unit>>//TODO change to <Void>
+    fun putPersonAvatarUUID(@Path("id")id: String, @Path("mediaID") mediaID: String) : Single<Response<Void>>
 
     @POST("api/persons/{id}/comments")
     fun addCommentToPerson(@Path("id") id: String, @Body comment: addCommentToPerson) : Single<Response<Unit>>

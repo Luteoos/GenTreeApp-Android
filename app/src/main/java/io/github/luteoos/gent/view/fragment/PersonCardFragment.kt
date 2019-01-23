@@ -2,6 +2,7 @@ package io.github.luteoos.gent.view.fragment
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.Person
 import android.arch.lifecycle.Observer
 import android.content.Intent
@@ -10,6 +11,7 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -22,6 +24,7 @@ import io.github.luteoos.gent.utils.Parameters
 import io.github.luteoos.gent.utils.UriResolver
 import io.github.luteoos.gent.view.activity.PersonGalleryActivity
 import io.github.luteoos.gent.view.recyclerviews.RVCommentsPerson
+import io.github.luteoos.gent.view.recyclerviews.RVEventsPerson
 import io.github.luteoos.gent.view.recyclerviews.RVRelatedPersonsList
 import io.github.luteoos.gent.viewmodels.PersonCardViewModel
 import kotlinx.android.synthetic.main.fragment_my_profile.*
@@ -130,6 +133,9 @@ class PersonCardFragment : BaseFragmentMVVM<PersonCardViewModel>() {
     }
 
     private fun setBindings(){
+        btnTvEvents.onClick {
+            openEventDialogBox()
+        }
         ivBtnGallery.onClick {
             openGalleryActivity()
         }
@@ -319,4 +325,20 @@ class PersonCardFragment : BaseFragmentMVVM<PersonCardViewModel>() {
         startActivity(intent)
     }
 
+    private fun openEventDialogBox() {
+        if(PersonListFromTree.getPerson(uuid) != null){
+            val list = PersonListFromTree.getPerson(uuid)!!.details.events
+            val rv = RecyclerView(activity!!)
+            AlertDialog.Builder(activity!!, R.style.DialogTheme)
+                .setCancelable(true)
+                .setView(rv.apply {
+                    layoutManager = LinearLayoutManager(activity!!)
+                    adapter = RVEventsPerson(list, activity!!)
+                })
+                .setPositiveButton(R.string.ok) { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
+        }
+    }
 }
