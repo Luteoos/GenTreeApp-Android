@@ -10,6 +10,7 @@ import io.github.luteoos.gent.R
 import io.github.luteoos.gent.data.PersonListFromTree
 import io.github.luteoos.gent.network.api.dataobjects.PersonDTO
 import io.github.luteoos.gent.network.api.response.getTreesListAssignedToUser
+import io.github.luteoos.gent.utils.CustomBus
 import io.github.luteoos.gent.utils.Event
 import io.github.luteoos.gent.utils.Parameters
 import kotlinx.android.synthetic.main.rv_related_persons_list.view.*
@@ -34,9 +35,9 @@ class RVRelatedPersonsList(val listPersonsUUID: MutableList<String>,
             view.layout.tvName.text = context.getString(R.string.api_error)
         view.layout.onClick {
             try {
-                Bus.send(
+               CustomBus.sendMessageWithUUID(
                     Event.MessageWithUUID(
-                        UUID.fromString(listPersonsUUID[position]),
+                        listPersonsUUID[position],
                         Parameters.SWITCH_TO_PERSON_WITH_UUID
                     )
                 )

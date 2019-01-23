@@ -33,4 +33,9 @@
     <string name="no_information">No Information</string>
     <string name="birth_date_person">Date of Birth:</string>
     <string name="death_date_person">Date of Death:</string>
+    <string name="person_comments">Comments</string>
+    <string name="add_comment">Add comment</string>
+    <string name="comment_add_success">Comment added successful! You will see it after refreshing</string>
+    <string name="events_descripton">Events</string>
+    <string name="ok">Close</string>
 </resources>

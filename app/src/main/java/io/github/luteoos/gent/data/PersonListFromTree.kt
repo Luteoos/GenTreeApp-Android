@@ -30,6 +30,15 @@ object PersonListFromTree {
         return list?.findLast { it.id == searchedID }
     }
 
+    fun getAllPersons(): MutableList<String>{
+        return if(list != null){
+            val UUIDList = MutableList(0){ _->""}
+            list!!.forEach { UUIDList.add(it.id) }
+            UUIDList
+        }else
+            MutableList(0){_->""}
+    }
+
     fun getPersonBirthDate(person: PersonDTO, context: Context): String{
         val event = person.details.events.findLast { it.type == "Birth" }
         return event?.getFormattedDate() ?: context.getString(R.string.no_information)

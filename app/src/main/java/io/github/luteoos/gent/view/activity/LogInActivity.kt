@@ -18,7 +18,8 @@ import kotlinx.android.synthetic.main.activity_log_in.*
 import org.jetbrains.anko.ctx
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import android.support.v4.os.HandlerCompat.postDelayed
-
+import android.view.animation.AnimationUtils
+import com.bumptech.glide.Glide
 
 
 class LogInActivity : BaseActivityMVVM<LogInViewModel>() {
@@ -30,6 +31,7 @@ class LogInActivity : BaseActivityMVVM<LogInViewModel>() {
         viewModel = LogInViewModel()
         this.connectToVMMessage()
         setBinding()
+        startAnimationSpin()
     }
 
     override fun onVMMessage(msg: String?){
@@ -84,6 +86,14 @@ class LogInActivity : BaseActivityMVVM<LogInViewModel>() {
         else{
             viewModel.LogInRest(etUsername.text.toString(), etPassword.text.toString())
         }
+    }
+
+    private fun startAnimationSpin(){
+        Glide.with(this)
+            .load(R.drawable.gentree_circle)
+            .into(ivLogoSpin)
+        val spin = AnimationUtils.loadAnimation(this, R.anim.spin_infinite)
+        ivLogoSpin.startAnimation(spin)
     }
 
     private fun startMainActivity(){

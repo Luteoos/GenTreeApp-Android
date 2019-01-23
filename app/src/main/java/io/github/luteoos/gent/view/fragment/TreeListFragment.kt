@@ -28,7 +28,7 @@ class TreeListFragment: BaseFragmentMVVM<TreeListViewModel>() {
     override fun onVMMessage(msg: String?) {
         when(msg){
             viewModel.GET_TREE_FAILED -> {
-                Toasty.error(ctx, R.string.api_error)
+                Toasty.error(ctx, R.string.api_error).show()
                 ivError.visibility = View.VISIBLE
                 treeListSpinner.visibility = View.GONE
             }

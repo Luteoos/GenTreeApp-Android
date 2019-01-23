@@ -27,19 +27,15 @@ open class OnSwipeDetector(val ctx: Context) : View.OnTouchListener {
     }
 
     open fun onSwipeTop(){
-        Toasty.info(ctx, "top").show()
     }
 
     open fun onSwipeBottom(){
-        Toasty.info(ctx, "bot").show()
     }
 
     open fun onSwipeLeft(){
-        Toasty.info(ctx, "left").show()
     }
 
     open fun onSwipeRight(){
-        Toasty.info(ctx, "right").show()
     }
 
     open fun onAnyActionPerformed(){

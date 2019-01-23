@@ -1,8 +1,14 @@
 package io.github.luteoos.gent.view.fragment
 
+import android.Manifest
+import android.app.Activity
 import android.app.Person
 import android.arch.lifecycle.Observer
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.bumptech.glide.Glide
@@ -13,13 +19,20 @@ import io.github.luteoos.gent.R
 import io.github.luteoos.gent.data.PersonListFromTree
 import io.github.luteoos.gent.utils.OnSwipeDetector
 import io.github.luteoos.gent.utils.Parameters
+import io.github.luteoos.gent.utils.UriResolver
+import io.github.luteoos.gent.view.activity.PersonGalleryActivity
+import io.github.luteoos.gent.view.recyclerviews.RVCommentsPerson
 import io.github.luteoos.gent.view.recyclerviews.RVRelatedPersonsList
 import io.github.luteoos.gent.viewmodels.PersonCardViewModel
+import kotlinx.android.synthetic.main.fragment_my_profile.*
 import kotlinx.android.synthetic.main.fragment_person_card.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.jetbrains.anko.support.v4.ctx
 
 class PersonCardFragment : BaseFragmentMVVM<PersonCardViewModel>() {
 
+    private val CHANGE_PERSON_AVATAR = 911
+    private val REQUEST_PERMISSION_STORAGE = 910
     private var uuid = ""
 
     override fun getLayoutID(): Int = R.layout.fragment_person_card
@@ -28,6 +41,24 @@ class PersonCardFragment : BaseFragmentMVVM<PersonCardViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = PersonCardViewModel()
         this.connectToVMMessage()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                CHANGE_PERSON_AVATAR -> {
+                    setAvatarSpinnerVisibility(true)
+                    val uri = data?.data
+                    val file = UriResolver.getFileFromUri(uri!!, context!!.contentResolver)
+                    viewModel.uploadMediaToServer(file,uuid)
+                }
+            }
+        }
+    }
+
+    fun resetUUID(){
+        uuid = ""
     }
 
     fun setFragmentPersonUUID(uuid: String){
@@ -62,6 +93,14 @@ class PersonCardFragment : BaseFragmentMVVM<PersonCardViewModel>() {
             adapter = RVRelatedPersonsList(PersonListFromTree.getPersonRelativesOfTypeUUIDList(uuid,
                 PersonListFromTree.RELATION_MARRIAGE),context)
         }
+        if(PersonListFromTree.getPerson(uuid) != null) {
+            rvComments.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = RVCommentsPerson(
+                    PersonListFromTree.getPerson(uuid)!!.details.comments,
+                    context)
+            }
+        }
     }
 
     private fun setCardPersonData(){
@@ -91,6 +130,23 @@ class PersonCardFragment : BaseFragmentMVVM<PersonCardViewModel>() {
     }
 
     private fun setBindings(){
+        ivBtnGallery.onClick {
+            openGalleryActivity()
+        }
+        ivPersonAvatar.onClick {
+            if(ContextCompat.checkSelfPermission(context!!,Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED)
+                openStorageForImage()
+            else
+                requestStoragePermission()
+        }
+        ibtnAddComment.onClick {
+            hideKeyboard()
+            if(!etCommentAdd.text.isNullOrBlank()){
+                viewModel.addCommentToPerson(uuid,etCommentAdd.text.toString())
+                etCommentAdd.text.clear()
+            }
+        }
         if(rvParents.adapter?.itemCount == 0)
             tvParentsText.visibility = View.INVISIBLE
         if(rvSiblings.adapter?.itemCount == 0)
@@ -136,6 +192,7 @@ class PersonCardFragment : BaseFragmentMVVM<PersonCardViewModel>() {
             }
 
             override fun onAnyActionPerformed() {
+                hideKeyboard()
                 setAllTvRvToDeafult()
             }
         })
@@ -195,6 +252,16 @@ class PersonCardFragment : BaseFragmentMVVM<PersonCardViewModel>() {
                     setAvatarSpinnerVisibility(false)
                 }
             }
+            viewModel.FILE_UPLOAD_FAILED ->{
+                setAvatarSpinnerVisibility(false)
+                Toasty.error(activity!!,R.string.error_upload).show()
+            }
+            viewModel.FILE_UPLOAD_SUCCESS -> {
+                setAvatarSpinnerVisibility(true)
+                viewModel.getPersonAvatar(uuid)
+            }
+            viewModel.COMMENT_ADDED -> Toasty.success(activity!!, R.string.comment_add_success).show()
+            viewModel.ERROR_COMMENT -> Toasty.error(activity!!, R.string.error_upload).show()
         }
     }
 
@@ -219,7 +286,37 @@ class PersonCardFragment : BaseFragmentMVVM<PersonCardViewModel>() {
             .into(ivPersonAvatar)
     }
 
-    fun resetUUID(){
-        uuid = ""
+    private fun openStorageForImage(){
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, null), CHANGE_PERSON_AVATAR)
     }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (grantResults.isNotEmpty()) {
+            when (requestCode) {
+                REQUEST_PERMISSION_STORAGE -> {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) openStorageForImage()
+                    else Toasty.info(ctx, resources.getString(R.string.need_permission)).show()
+                }
+            }
+        }
+    }
+
+    private fun requestStoragePermission(){
+        ActivityCompat.requestPermissions(
+            activity!!,
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+            REQUEST_PERMISSION_STORAGE
+        )
+    }
+
+    private fun openGalleryActivity(){
+        val intent = Intent(context!!,PersonGalleryActivity::class.java)
+        intent.putExtra(Parameters.PERSON_UUID,uuid)
+        startActivity(intent)
+    }
+
 }

@@ -48,6 +48,10 @@
                 android:name=".view.activity.TreeActivity"
                 android:theme="@style/LandingTheme"
                 android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+                android:name=".view.activity.PersonGalleryActivity"
+                android:theme="@style/LandingTheme"
+                android:windowSoftInputMode="stateHidden|adjustPan" />
     </application>
 
 

@@ -6,4 +6,5 @@ object Parameters {
     const val TREE_UUID = "TREE_UUID"
     const val TREE_NAME = "TREE_NAME"
     const val SWITCH_TO_PERSON_WITH_UUID = "SWITCH_TO_PERSON_WITH_UUID"
+    const val PERSON_UUID = "PERSON_UUID"
 }

@@ -65,6 +65,20 @@
         app:layout_constraintTop_toTopOf="@+id/progressBar"
         tools:elevation="@dimen/materialize_spacing" />
 
+    <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:srcCompat="@drawable/gentree_circle"
+            android:id="@+id/ivLogoSpin"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/labelUsername"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintDimensionRatio="1:1"/>
     <ProgressBar
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
@@ -72,6 +86,8 @@
             android:id="@+id/progressBar"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent" android:visibility="invisible"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="invisible"/>
 </android.support.constraint.ConstraintLayout>
