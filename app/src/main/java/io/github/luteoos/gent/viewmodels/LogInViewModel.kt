@@ -20,11 +20,13 @@ class LogInViewModel: BaseViewModel() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                if(it.code()==200){
-                    SessionManager.userUUID = UUID.fromString(it.body()?.id)
-                    SessionManager.username = it.body()?.username
-                    SessionManager.accessToken = it.body()?.token
-                    message.value = Parameters.LOG_IN_SUCCESS
+                when(it.code()){
+                    200 ->{ SessionManager.userUUID = UUID.fromString(it.body()?.id)
+                        SessionManager.username = it.body()?.username
+                        SessionManager.accessToken = it.body()?.token
+                        message.value = Parameters.LOG_IN_SUCCESS
+                    }
+                    else -> message.value = Parameters.LOG_IN_FAILED
                 }
             },{
                 message.value = Parameters.LOG_IN_FAILED
